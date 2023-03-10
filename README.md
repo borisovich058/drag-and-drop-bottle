@@ -1,2 +1,2 @@
 # drag and drop
-drag and drop bottle
+Приложение для игры в расставление бутылок
