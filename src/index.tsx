@@ -1,6 +1,7 @@
 import * as React from "react";
 import { render } from "react-dom";
-import BottlesGame from "./components/BottlesGame";
+
+import App from "./App";
 
 const rootElement = document.getElementById("root");
-render(<BottlesGame />, rootElement);
+render(<App />, rootElement);

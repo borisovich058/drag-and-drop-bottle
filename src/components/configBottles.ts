@@ -1,20 +1,25 @@
 export enum BottlesEnum {
-  blue,
-  brown,
-  green,
-  red,
-  white,
+  Blue,
+  Brown,
+  Green,
+  Red,
+  White,
 }
 
 /*Позиция*/
 export enum ShelvesEnum {
-  top,
-  bottom,
+  Top,
+  Bottom,
 }
 
 export type BottlesType = {
   id: BottlesEnum;
   image: string;
+};
+
+export type BottleDragProps = {
+  bottle: BottlesType;
+  position: PositionType;
 };
 
 export type PositionType = [ShelvesEnum, BottlesEnum];

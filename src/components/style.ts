@@ -3,6 +3,11 @@ import { BottlesEnum, ShelvesEnum } from "./configBottles";
 
 type PositionType = [ShelvesEnum, BottlesEnum];
 
+const SHELF_START_H = 2.7; // горизонтальный отступ между началом полки и первой ячейкой
+const DROP_WIDTH = 14.8; // ширина ячейки на полке
+const DROP_HEIGHT = 15; // высота ячейки на полке
+const DRAG_SIZE = 12.1; // ширина/высота draggable бутылки
+
 const Container = styled.div`
   position: absolute;
   top: 0;
@@ -51,15 +56,45 @@ const getShelfItemPositionStyle = ([top, left]: PositionType) => `
 `;
 
 const DNDItem = styled.div<{
-  position: PositionType;
+  position: PositionType,
 }>`
   ${({ position }) => getShelfItemPositionStyle(position)}
   position: absolute;
 `;
 
-const SHELF_START_H = 2.7; // горизонтальный отступ между началом полки и первой ячейкой
-const DROP_WIDTH = 14.8; // ширина ячейки на полке
-const DROP_HEIGHT = 15; // высота ячейки на полке
-const DRAG_SIZE = 12.1; // ширина/высота draggable бутылки
+const BottleDragWrapper = styled(DNDItem)<{
+  isDragging: boolean,
+}>`
+  z-index: 1;
+  width: ${DRAG_SIZE}rem;
+  height: ${DRAG_SIZE}rem;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 
-export { Container, Playground, Title, Shelves, Rules, getShelfItemPositionStyle, DNDItem };
+  /* В момент перетаскиывания скрываем элемент */
+  visibility: ${(props) => (props.isDragging ? "hidden" : "visible")};
+`;
+
+const BottleDropWrapper = styled(DNDItem)`
+  width: ${DROP_WIDTH}rem;
+  height: ${DROP_HEIGHT}rem;
+`;
+
+const BottlePreviewImg = styled.img`
+  width: ${DRAG_SIZE}rem;
+  height: ${DRAG_SIZE}rem;
+`;
+
+export {
+  Container,
+  Playground,
+  Title,
+  Shelves,
+  Rules,
+  getShelfItemPositionStyle,
+  DNDItem,
+  BottleDragWrapper,
+  BottleDropWrapper,
+  BottlePreviewImg,
+};
