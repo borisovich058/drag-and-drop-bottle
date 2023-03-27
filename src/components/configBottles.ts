@@ -22,40 +22,44 @@ export type BottleDragProps = {
   position: PositionType;
 };
 
+export type BottleDropProps = {
+  position: PositionType;
+}
+
 export type PositionType = [ShelvesEnum, BottlesEnum];
 export type ShelfItemType = BottlesEnum | null;
 export type ShelfItemsListType = ShelfItemType[];
 
 export const bottles: Record<BottlesEnum, BottlesType> = {
-  [BottlesEnum.blue]: {
-    id: BottlesEnum.blue,
+  [BottlesEnum.Blue]: {
+    id: BottlesEnum.Blue,
     image: require("./img/blue.png"),
   },
-  [BottlesEnum.brown]: {
-    id: BottlesEnum.brown,
+  [BottlesEnum.Brown]: {
+    id: BottlesEnum.Brown,
     image: require("./img/brown.png"),
   },
-  [BottlesEnum.green]: {
-    id: BottlesEnum.green,
+  [BottlesEnum.Green]: {
+    id: BottlesEnum.Green,
     image: require("./img/green.png"),
   },
-  [BottlesEnum.red]: {
-    id: BottlesEnum.red,
+  [BottlesEnum.Red]: {
+    id: BottlesEnum.Red,
     image: require("./img/red.png"),
   },
-  [BottlesEnum.white]: {
-    id: BottlesEnum.white,
+  [BottlesEnum.White]: {
+    id: BottlesEnum.White,
     image: require("./img/white.png"),
   },
 };
 
 /** Выигрышная комбинация */
 export const correctPosition = [
-  BottlesEnum.green,
-  BottlesEnum.white,
-  BottlesEnum.brown,
-  BottlesEnum.red,
-  BottlesEnum.blue,
+  BottlesEnum.Green,
+  BottlesEnum.White,
+  BottlesEnum.Brown,
+  BottlesEnum.Red,
+  BottlesEnum.Blue,
 ];
 
 /**Правила */

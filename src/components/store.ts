@@ -5,7 +5,7 @@ import { correctPosition, PositionType, ShelfItemsListType, ShelfItemType, Shelv
 
 export class BottleGameStore {
   draggetPositions: PositionType | null = null;
-  positions: Record<ShelvesEnum, ShelfItemsListType>;
+  positions!: Record<ShelvesEnum, ShelfItemsListType>;
 
   constructor() {
     makeAutoObservable(this);
@@ -14,8 +14,8 @@ export class BottleGameStore {
 
   shuffle(): void {
     this.positions = {
-      [ShelvesEnum.top]: new Array(correctPosition.length).fill(null),
-      [ShelvesEnum.bottom]: [...correctPosition].sort(
+      [ShelvesEnum.Top]: new Array(correctPosition.length).fill(null),
+      [ShelvesEnum.Bottom]: [...correctPosition].sort(
         () => Math.random() - 0.5
       ),
     };
@@ -24,7 +24,7 @@ export class BottleGameStore {
   get isOneBottomCorrect(): boolean {
     return correctPosition.some(
       (bottleId, columnIndex) =>
-        bottleId === this.positions[ShelvesEnum.bottom][columnIndex]
+        bottleId === this.positions[ShelvesEnum.Bottom][columnIndex]
     );
   }
 
@@ -55,14 +55,14 @@ export class BottleGameStore {
   get isCorrect(): boolean {
     return (
       JSON.stringify(correctPosition) ===
-      JSON.stringify(this.positions[ShelvesEnum.top])
+      JSON.stringify(this.positions[ShelvesEnum.Top])
     );
   }
 
   get isUncorrect(): boolean {
     return (
       !this.isCorrect &&
-      this.positions[ShelvesEnum.top].every((position) => position !== null)
+      this.positions[ShelvesEnum.Top].every((position) => position !== null)
     );
   }
 }
