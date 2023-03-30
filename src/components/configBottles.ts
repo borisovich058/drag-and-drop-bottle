@@ -26,6 +26,12 @@ export type BottleDropProps = {
   position: PositionType;
 }
 
+export type BottleGlyphType = {
+  type: string;
+  bottle: BottlesType;
+};
+
+
 export type PositionType = [ShelvesEnum, BottlesEnum];
 export type ShelfItemType = BottlesEnum | null;
 export type ShelfItemsListType = ShelfItemType[];

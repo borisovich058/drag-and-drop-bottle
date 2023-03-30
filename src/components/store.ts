@@ -5,8 +5,8 @@ import { correctPosition, PositionType, ShelfItemsListType, ShelfItemType, Shelv
 
 export class BottleGameStore {
   draggetPositions: PositionType | null = null;
-  positions!: Record<ShelvesEnum, ShelfItemsListType>;
-
+  positions: Record<ShelvesEnum, ShelfItemsListType>;
+  
   constructor() {
     makeAutoObservable(this);
     this.shuffle();
@@ -31,6 +31,15 @@ export class BottleGameStore {
   onDrag(position: PositionType): void {
     this.draggetPositions = position;
   }
+  
+  getShelf(shelf: string): ShelfItemsListType {
+    return this.positions[shelf];
+  }
+
+  get positionKeys(): string[] {
+    return Object.keys(this.positions);
+  }
+
 
   onDrop(bottleId: number, positions: PositionType): void {
     const itemAtDrop = this.getItem(positions);

@@ -16,7 +16,7 @@ const BottleDrop: React.FC<BottleDropProps> = ({
     drop, // ref drop-элемента
   ] = useDrop({
     accept: BOTTLE_DND_TYPE, // в этот drop-элемент можно перетащить только drag-элемент с данным типом*
-    drop: (item) => {
+    drop: (item: any) => {
       store.onDrop(item.bottle.id, position);
     },
   });
