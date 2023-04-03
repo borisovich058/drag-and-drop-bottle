@@ -1,10 +1,15 @@
+import { observer } from 'mobx-react';
 import React from 'react';
 import { useDrag } from "react-dnd";
-import { BottleDragProps } from "./configBottles";
+import { BOTTLE_DND_TYPE } from './config';
 import { BottlesGameContext, useStore } from "./store";
 import { BottleDragWrapper } from "./style";
+import { BottleType, PositionType } from './types';
 
-const BOTTLE_DND_TYPE = "BOTTLE_DND_TYPE";
+type BottleDragProps = {
+  bottle: BottleType;
+  position: PositionType;
+};
 
 const BottleDrag: React.FC<BottleDragProps | any> = ({
   bottle,
@@ -35,4 +40,4 @@ const BottleDrag: React.FC<BottleDragProps | any> = ({
   );
 };
 
-export default BottleDrag;
+export default observer(BottleDrag);

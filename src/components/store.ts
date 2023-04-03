@@ -1,54 +1,34 @@
-import React from "react";
 import { makeAutoObservable } from "mobx";
 import { createContext, useContext } from "react";
-import { correctPosition, PositionType, ShelfItemsListType, ShelfItemType, ShelvesEnum } from "./configBottles";
+import { correctPositions } from "./config";
+import { PositionType, ShelvesEnum, ShelfItemsListType, ShelfItemType } from "./types";
 
-export class BottleGameStore {
-  draggetPositions: PositionType | null = null;
+
+export class BottlesStore {
+  draggedPosition: PositionType | null = null;
   positions: Record<ShelvesEnum, ShelfItemsListType>;
-  
+
   constructor() {
-    makeAutoObservable(this);
     this.shuffle();
+    makeAutoObservable(this);
+  }
+
+  get isOneAtBottomCorrect(): boolean {
+    return correctPositions.some(
+      (bottleId, columnIndex) =>
+        bottleId === this.positions[ShelvesEnum.bottom][columnIndex]
+    );
   }
 
   shuffle(): void {
     this.positions = {
-      [ShelvesEnum.Top]: new Array(correctPosition.length).fill(null),
-      [ShelvesEnum.Bottom]: [...correctPosition].sort(
+      [ShelvesEnum.top]: new Array(correctPositions.length).fill(null),
+      [ShelvesEnum.bottom]: [...correctPositions].sort(
         () => Math.random() - 0.5
-      ),
+      )
     };
-  }
 
-  get isOneBottomCorrect(): boolean {
-    return correctPosition.some(
-      (bottleId, columnIndex) =>
-        bottleId === this.positions[ShelvesEnum.Bottom][columnIndex]
-    );
-  }
-
-  onDrag(position: PositionType): void {
-    this.draggetPositions = position;
-  }
-  
-  getShelf(shelf: string): ShelfItemsListType {
-    return this.positions[shelf];
-  }
-
-  get positionKeys(): string[] {
-    return Object.keys(this.positions);
-  }
-
-
-  onDrop(bottleId: number, positions: PositionType): void {
-    const itemAtDrop = this.getItem(positions);
-    if (itemAtDrop || !this.draggetPositions || this.isCorrect) {
-      return;
-    }
-
-    this.setItem(this.draggetPositions, null);
-    this.setItem(positions, bottleId);
+    // this.isOneAtBottomCorrect && this.shuffle();
   }
 
   getItem(position: PositionType): ShelfItemType {
@@ -61,22 +41,43 @@ export class BottleGameStore {
     this.positions[shelfIndex][columnIndex] = item;
   }
 
+  onDrop(bottleId: number, position: PositionType): void {
+    const itemAtDrop = this.getItem(position);
+    if (itemAtDrop || !this.draggedPosition || this.isCorrect) {
+      return;
+    }
+    this.setItem(this.draggedPosition, null);
+    this.setItem(position, bottleId);
+  }
+
+  onDrag(position: PositionType): void {
+    this.draggedPosition = position;
+  }
+
+  get positionKeys(): string[] {
+    return Object.keys(this.positions);
+  }
+
+  getShelf(shelf: string): ShelfItemsListType {
+    return this.positions[shelf];
+  }
+
   get isCorrect(): boolean {
     return (
-      JSON.stringify(correctPosition) ===
-      JSON.stringify(this.positions[ShelvesEnum.Top])
+      JSON.stringify(correctPositions) ===
+      JSON.stringify(this.positions[ShelvesEnum.top])
     );
   }
 
   get isUncorrect(): boolean {
     return (
       !this.isCorrect &&
-      this.positions[ShelvesEnum.Top].every((position) => position !== null)
+      this.positions[ShelvesEnum.top].every((position) => position !== null)
     );
   }
 }
 
-export const BottlesGameContext = createContext<BottleGameStore | null>(null);
+export const BottlesGameContext = createContext<BottlesStore | null>(null);
 
 export const useStore = <T>(context: React.Context<T | null>): T => {
   const data = useContext(context);
@@ -84,5 +85,6 @@ export const useStore = <T>(context: React.Context<T | null>): T => {
   if (!data) {
     throw new Error("Using store outside of context");
   }
+
   return data;
 };

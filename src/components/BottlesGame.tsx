@@ -1,18 +1,20 @@
 import React from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from 'react-dnd-html5-backend'
-import { BottleGameStore, BottlesGameContext } from "./store";
-import { Container, Playground, Rules, Shelves, Title } from "./style";
-import { bottles, rules, ShelvesEnum } from "./configBottles";
-import BottlePreview from "./BottlePreview";
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { BottlesStore, BottlesGameContext } from "./store";
+import { Playground, Rules, Shelves, Title } from "./style";
+
 import BottleDrag from "./BottleDrag";
 import BottleDrop from "./BottleDrop";
+import { bottles, rules } from "./config";
+import { ShelvesEnum } from "./types";
+import { observer } from "mobx-react";
 
 const BottlesGame: React.FC = () => {
-  const [store] = React.useState(() => new BottleGameStore());
+  const [store] = React.useState(() => new BottlesStore());
   
   return (
-    <DndProvider backend={HTML5Backend}  options={HTML5Backend}>
+    <DndProvider backend={HTML5Backend}>
       <BottlesGameContext.Provider value={store}>
         <Playground>
           {store.isCorrect ? (
@@ -23,7 +25,6 @@ const BottlesGame: React.FC = () => {
             <Title>Расставь бутылки на верхней полке в нужном порядке</Title>
           )}
           <Shelves>
-            <BottlePreview />
 
             {store.positionKeys.map((shelfKey, shelfIndex) =>
               store.getShelf(shelfKey).map((bottleKey, bottleIndex) => {
@@ -42,9 +43,9 @@ const BottlesGame: React.FC = () => {
 
             {Object.keys(bottles).map((columnIndex) => (
               <div key={`bottlePlaceholder-${columnIndex}`}>
-                <BottleDrop position={[ShelvesEnum.Top, Number(columnIndex)]} />
+                <BottleDrop position={[ShelvesEnum.top, Number(columnIndex)]} />
                 <BottleDrop
-                  position={[ShelvesEnum.Bottom, Number(columnIndex)]}
+                  position={[ShelvesEnum.bottom, Number(columnIndex)]}
                 />
               </div>
             ))}
@@ -63,4 +64,4 @@ const BottlesGame: React.FC = () => {
 };
 
 
-export default BottlesGame;
+export default observer(BottlesGame);

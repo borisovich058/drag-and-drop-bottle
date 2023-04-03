@@ -1,10 +1,15 @@
+import { observer } from "mobx-react";
 import React from "react";
 import { useDrop } from "react-dnd";
-import { BottleDropProps } from "./configBottles";
+import { BOTTLE_DND_TYPE } from "./config";
 import { BottlesGameContext, useStore } from "./store";
 import { BottleDropWrapper } from "./style";
+import { PositionType } from "./types";
 
-const BOTTLE_DND_TYPE = "BOTTLE_DND_TYPE";
+
+type BottleDropProps = {
+  position: PositionType;
+};
 
 const BottleDrop: React.FC<BottleDropProps> = ({
   position,
@@ -13,9 +18,9 @@ const BottleDrop: React.FC<BottleDropProps> = ({
 
   const [
     ,
-    drop, // ref drop-элемента
+    drop,
   ] = useDrop({
-    accept: BOTTLE_DND_TYPE, // в этот drop-элемент можно перетащить только drag-элемент с данным типом*
+    accept: BOTTLE_DND_TYPE, 
     drop: (item: any) => {
       store.onDrop(item.bottle.id, position);
     },
@@ -24,4 +29,4 @@ const BottleDrop: React.FC<BottleDropProps> = ({
   return <BottleDropWrapper position={position} ref={drop}/>
 };
 
-export default BottleDrop;
+export default observer(BottleDrop);
